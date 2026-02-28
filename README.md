@@ -21,6 +21,3 @@
 - LocalStorage API
 - Drag & Drop API
 
-## Ссылка на рабочую версию
-
-👉 [https://lokilaufer.github.io/dnd/](https://lokilaufer.github.io/dnd/)
