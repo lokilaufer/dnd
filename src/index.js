@@ -25,7 +25,11 @@ class TrelloClone {
   }
 
   saveState() {
-    localStorage.setItem('trello-state', JSON.stringify(this.state));
+      try {
+          localStorage.setItem("trello-state", JSON.stringify(this.state));
+      } catch (error) {
+          console.error("Failed to save state to localStorage:", error);
+      }
   }
 
   init() {
@@ -42,7 +46,7 @@ class TrelloClone {
 
       cards.forEach((cardText) => {
         const card = this.createCardElement(cardText, columnId);
-        container.appendChild(card);
+        container.append(card);
       });
     }
   }
@@ -63,8 +67,8 @@ class TrelloClone {
     deleteBtn.title = 'Удалить карточку';
     deleteBtn.innerHTML = '×';
 
-    card.appendChild(textSpan);
-    card.appendChild(deleteBtn);
+    card.append(textSpan);
+    card.append(deleteBtn);
 
     // Добавляем обработчики  на карточку
     card.addEventListener('dragstart', this.handleDragStart.bind(this));
@@ -135,7 +139,9 @@ class TrelloClone {
     }));
 
     // Убираем стандартное изображение
-    e.dataTransfer.setDragImage(new Image(), 0, 0);
+       const dragImage = card.cloneNode(true);
+       dragImage.style.width = card.offsetWidth + 'px';
+       e.dataTransfer.setDragImage(dragImage, e.offsetX, e.offsetY);
 
     // Для Firefox
     if (navigator.userAgent.includes('Firefox')) {
@@ -269,9 +275,27 @@ class TrelloClone {
   }
 
   cleanup() {
+    // Удаляем плейсхолдер
     this.removePlaceholder();
+
+    // Очищаем все переменные, связанные с перетаскиванием
     this.draggedCard = null;
     this.draggedCardData = null;
+    this.draggedCardText = '';
+    this.draggedColumn = '';
+    this.draggedElement = null;
+    this.dragStartX = 0;
+    this.dragStartY = 0;
+    this.dragOffsetX = 0;
+    this.dragOffsetY = 0;
+
+    // Убираем класс dragging со всех карточек
+    document.querySelectorAll('.card.dragging').forEach(card => {
+      card.classList.remove('dragging');
+    });
+
+    // Удаляем все оставшиеся плейсхолдеры
+    document.querySelectorAll('.placeholder').forEach(el => el.remove());
   }
 
   addCard(columnId) {
