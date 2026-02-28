@@ -1,0 +1,255 @@
+/* Сброс стилей */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: #0079bf;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* Основная доска */
+.board {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Колонка */
+.column {
+  background: #ebecf0;
+  border-radius: 8px;
+  width: 300px;
+  padding: 12px;
+  min-height: 400px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.column h2 {
+  font-size: 18px;
+  color: #172b4d;
+  margin-bottom: 12px;
+  padding-left: 8px;
+  font-weight: 600;
+}
+
+/* Контейнер для карточек */
+.cards-container {
+  min-height: 50px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 4px;
+  transition: background-color 0.2s;
+}
+
+/* Стили для пустого контейнера */
+.cards-container:empty {
+  min-height: 50px;
+  border: 2px dashed rgba(0,0,0,0.1);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Скроллбар */
+.cards-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cards-container::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+
+.cards-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.cards-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.3);
+}
+
+/* Карточка */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  position: relative;
+  cursor: grab;
+  user-select: none;
+  transition: box-shadow 0.2s, transform 0.2s, opacity 0.2s;
+  word-wrap: break-word;
+  border: 1px solid transparent;
+}
+
+/* Карточка при наведении */
+.card:hover {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-color: #0079bf;
+}
+
+/* Карточка при захвате */
+.card:active {
+  cursor: grabbing;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  transform: scale(1.02);
+}
+
+/* Карточка во время перетаскивания */
+.card.dragging {
+  opacity: 0.3;
+  transform: scale(0.98);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  cursor: grabbing;
+}
+
+/* Текст карточки */
+.card-text {
+  display: block;
+  margin-right: 24px;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+/* Кнопка удаления */
+.card .delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ebecf0;
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #6b778c;
+  line-height: 1;
+  padding: 0;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+/* Показываем кнопку удаления при наведении на карточку */
+.card:hover .delete-btn {
+  display: flex;
+}
+
+/* Кнопка удаления при наведении */
+.card .delete-btn:hover {
+  background: #dc3545;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Плейсхолдер при перетаскивании */
+.placeholder {
+  height: 50px;
+  background: rgba(0, 121, 191, 0.1);
+  border: 2px dashed #0079bf;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+/* Анимация пульсации для плейсхолдера */
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Кнопка добавления карточки */
+.add-card-btn {
+  background: transparent;
+  border: none;
+  color: #5e6c84;
+  padding: 8px;
+  width: 100%;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 4px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+/* Кнопка добавления при наведении */
+.add-card-btn:hover {
+  background: rgba(0,0,0,0.1);
+  color: #172b4d;
+  padding-left: 12px;
+}
+
+/* Кнопка добавления при нажатии */
+.add-card-btn:active {
+  transform: scale(0.98);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .board {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .column {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+/* Дополнительные стили для улучшения Drag & Drop */
+.card[draggable="true"] {
+  -webkit-user-drag: element;
+  user-drag: element;
+}
+
+/* Запрещаем выделение текста при перетаскивании */
+.dragging * {
+  user-select: none;
+}
+
+/* Подсветка колонки при перетаскивании */
+.cards-container.drag-over {
+  background-color: rgba(0, 121, 191, 0.05);
+  border-radius: 8px;
+}
+
+/* Фикс для Chrome и Safari */
+.card {
+  -webkit-user-drag: element;
+  -webkit-user-select: none;
+}
+
+/* Фикс для Firefox */
+@-moz-document url-prefix() {
+  .card {
+    user-select: none;
+  }
+}
+
+/* Убираем стандартные стили при перетаскивании */
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
